@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your E-Commerce Store</title>
+    {% load static %}
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* CSS styles for centering and layout */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 0;
+            background-color: #f5f5f5;
+        }
+
+        .hero h2 {
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+
+        .hero p {
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+
+        .btn-shop {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-shop:hover {
+            background-color: #e55e00;
+        }
+
+        .banner-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo h1 {
+            font-size: 24px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .footer-links ul li:last-child {
+            margin-right: 0;
+        }
+
+        .footer-links ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-social {
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            display: inline-block;
+            margin-right: 10px;
+            color: #fff;
+            /* Set color for Font Awesome icons */
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to Book Store</h2>
+            <p>Discover the top trends and find the perfect books for you.</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'productPage' %}" class="btn-shop">Purchase Now</a>
+            {% else %}
+            <a href="{% url 'loginpage' %}" class="btn-shop">Purchase Now</a>
+            {% endif %}        
+        </div>
+    </section>
+
+    <!-- Banner Image -->
+    <img src="{% static 'Media/banner.jpg' %}" alt="Banner Image" class="banner-image">
+    <img src="{% static 'Media/banner2.jpg' %}" alt="Banner Image" class="banner-image">
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h1>Your Logo</h1>
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-social">
+                <!-- Font Awesome icons for social media -->
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const bannerImages = document.querySelectorAll('.banner-image');
+        let currentImageIndex = 0;
+
+        function showNextImage() {
+            // Hide current image
+            bannerImages[currentImageIndex].classList.remove('active');
+
+            // Increment index or reset to 0 if at the end
+            currentImageIndex = (currentImageIndex + 1) % bannerImages.length;
+
+            // Show next image
+            bannerImages[currentImageIndex].classList.add('active');
+
+            // Call the function again after some time (e.g., 5 seconds)
+            setTimeout(showNextImage, 5000); // Change image every 5 seconds
+        }
+
+        // Start rotating images
+        showNextImage();
+    </script>
+</body>
+
+</html>

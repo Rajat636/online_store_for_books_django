@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    {% load static %}
+    <!-- <link rel="stylesheet" href="{% static 'css/admin_product.css' %}"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .products-table th,
+        .products-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .products-table th {
+            background-color: #f3f3f3;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .products-table td img {
+            max-width: 100px;
+            max-height: 100px;
+            vertical-align: middle;
+        }
+
+        .products-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #ff9900, #ff5f6d);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #e65c00, #ff0055);
+        }
+
+        .btn a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% include './admin_header.html' %}
+    <div class="products-container">
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                    <th>Product Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{product.name}}">
+                        {% else %}
+                        No image found
+                        {% endif %}
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td class="btn-container">
+                        <button class="btn btn-update"><a href="#">Update</a></button>
+                        <button class="btn btn-delete"><a href="{% url 'deleteProduct' product.id %}">Delete</a></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

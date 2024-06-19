@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="..." crossorigin="anonymous" />
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 70%;
+            /* Adjust width of container */
+            margin-left: 15px;
+            padding: 20px;
+            float: left;
+            /* Float the container to the left */
+        }
+
+
+        .empty-cart {
+            max-width: 50%;
+            max-height: 50%;
+            /* Center the image */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h2 {
+            color: #212121;
+            /* Flipkart's dark grey */
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            /* Allow vertical scrolling */
+        }
+
+        th,
+        tr,
+        td {
+            border: 1px solid #e0e0e0;
+            /* Flipkart's light grey */
+            padding: 12px 15px;
+            text-align: center;
+            /* Center align text */
+        }
+
+        thead {
+            background-color: #2874f0;
+            /* Flipkart's blue */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+            /* Flipkart's off-white */
+        }
+
+        img {
+            max-width: 100px;
+            /* Adjust as needed */
+            max-height: 100px;
+            /* Adjust as needed */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .quantity-btns {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quantity-btns button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .quantity-btns button i {
+            color: #616161;
+            /* Flipkart's grey */
+            font-size: 18px;
+        }
+
+        .delete-btn button i {
+            color: #f44336;
+            /* Flipkart's red */
+        }
+
+        .delete-btn button:hover i {
+            color: #d32f2f;
+            /* Darker red on hover */
+        }
+
+        p {
+            color: #616161;
+            /* Flipkart's grey */
+        }
+
+
+        .total-amount {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f44336;
+            /* Flipkart's red */
+            margin-bottom: 10px;
+        }
+
+        .buy-now-btn {
+            background-color: #f44336;
+            /* Flipkart's red */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background-color: #d32f2f;
+            /* Darker red on hover */
+        }
+
+        .summary-card {
+            position: fixed;
+            background-color: gray;
+            /* Light pink background color */
+            padding: 20px;
+            width: 25%;
+            /* 25% width for the summary card */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            top: 20%;
+            /* Adjust as needed */
+            right: 20px;
+            /* Adjust as needed */
+        }
+
+        /* Modal CSS */
+        /* Modal CSS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 20px;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            /* Adjust vertical margin as needed */
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 60%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            max-width: 500px;
+            /* Set max-width to limit width of the modal */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .btn-confirm {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-confirm:hover {
+            background-color: #45a049;
+        }
+
+        /* css for payment options*/
+        .styled-select {
+            width: calc(100% - 20px);
+            /* Adjust width as needed */
+            margin-bottom: 20px;
+        }
+
+        .styled-select select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .styled-select select::-ms-expand {
+            display: none;
+        }
+
+        .styled-select select:focus {
+            outline: none;
+            border-color: #007bff;
+            /* Adjust focus color as needed */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            /* Adjust focus shadow as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header can be included here if needed -->
+    {% include './header.html' %}
+    <div class="container">
+        {% if prod %}
+        <h2>Product List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in prod %}
+                <tr>
+                    <!-- <td>{{ forloop.counter }}</td> -->
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product }}" />
+                    </td>
+                    <td>{{ item.product }}</td>
+                    <td class="tot">₹{{ item.total_price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="quantity-btns">
+                        <form method="post" action="{% url 'decrease_quantity' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit"><i class="fas fa-minus"></i></button>
+                        </form>
+                        <form method="post" action="{% url 'increase_quantity' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit"><i class="fas fa-plus"></i></button>
+                        </form>
+                        <form method="post" class="delete-btn" action="{% url 'delete_quantity' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <img src="{% static 'Media/emptycart.jpg' %}" alt="Cart Empty" class="empty-cart">
+        {% endif %}
+
+    </div>
+    {% if prod %}
+    <div class="summary-card">
+        <div class="total-amount">Total Amount: </div>
+        <div id="totalDisplay"></div>
+        <button class="buy-now-btn" id="placeOrderBtn">PLACE ORDER</button>
+    </div>
+    {% endif%}
+    <!-- Modal HTML -->
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Order Information</h2>
+            <form method="POST" action="{% url 'confirmOrder' %}">
+                {% csrf_token %}
+                <label for="receiver_name">Receiver Name:</label>
+                <input type="text" id="receiver" name="receiver_name">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address">
+                <label for="mobile">Mobile:</label>
+                <input type="text" id="mobile" name="mobile">
+                <label for="payment">Payment Options:</label>
+                <div class="styled-select">
+                    <select id="payment" name="payment">
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <button type="submit" id="confirmOrderBtn" class="btn-confirm">Confirm Order</button>
+            </form>
+        </div>
+    </div>>
+    </div>
+
+
+    <!-- Footer can be included here if needed -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var total = 0;
+            var totalElements = document.querySelectorAll('.tot');
+            totalElements.forEach(function (element) {
+                total += parseFloat(element.textContent.replace('₹', ''));
+            });
+            document.getElementById('totalDisplay').innerHTML = '₹' + total.toFixed(2);
+
+            var placeOrderBtn = document.getElementById('placeOrderBtn');
+            var modal = document.getElementById('myModal');
+            var closeBtn = document.getElementsByClassName("close")[0];
+
+            placeOrderBtn.addEventListener('click', function () {
+                modal.style.display = "block";
+            });
+
+            closeBtn.addEventListener('click', function () {
+                modal.style.display = "none";
+            });
+
+            var confirmOrderBtn = document.getElementById('confirmOrderBtn');
+            confirmOrderBtn.addEventListener('click', function () {
+                var address = document.getElementById('address').value;
+                var email = document.getElementById('email').value;
+                console.log('Address:', address);
+                console.log('Email:', email);
+                modal.style.display = "none";
+            });
+        });
+    </script>
+
+</body>
+
+</html>

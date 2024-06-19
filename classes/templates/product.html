@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            /*background-color: lightblue !important; */
+            margin: 0;
+            padding: 0;
+            position: relative; /* Add position relative to body for absolute positioning */
+        }
+
+        .header-image {
+            position: relative;
+            margin-top: calc(50px); /* Adjust the margin-top value to include the height of the navbar */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 90%; /* Adjust the max-width to decrease the size of the image */
+            width: 40%; /* Allow the image to adjust its width while maintaining aspect ratio */
+        }
+        
+
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 20px; /* Add top margin to create space for the header image */
+        }
+
+        .product {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            width: calc(25% - 20px);
+            box-sizing: border-box;
+        }
+
+        h3 {
+            color: #007185;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .btn {
+            background-color: #ff9900;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-buy {
+            background-color: #232f3e;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ffbd69;
+        }
+
+        .btn-buy:hover {
+            background-color: #35424a;
+        }
+
+        .btn a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .products-container::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    {% if user.is_superuser%}
+    {% include './admin_header.html' %}
+    {% else %}
+    {% include './header.html' %}
+    {% endif %}
+    <img class="header-image" src="{% static  'Media/bestsellerheading.jpg' %}" alt="header image">
+    <div class="products-container">
+        {% for product in products %}
+        <div class="product">
+            <div>
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{product.name}}">
+                {% else %}
+                No image found
+                {% endif %}
+            </div>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.price}}</p>
+            <form class="add-to-cart-form" method="post" action="{% url 'add_to_cart' %}">
+                {% csrf_token %}
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" value="1" min="1">
+                <input type="hidden" name="product" value="{{ product.id }}">
+                <button class="btn btn-buy">
+                    Add to cart
+                </button>
+            </form>
+            <button class="btn btn-buy" type="submit">
+                Buy Now
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

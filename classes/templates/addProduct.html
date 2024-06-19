@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/addProduct.css' %}">
+    
+</head>
+<body>      
+    {% include './admin_header.html' %}
+
+        <div class="container">
+            <h2 style="text-align: center; margin-top:40px; color:blueviolet">Add Product</h2>
+            <form action="#" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                {{form.non_field_errors}}
+
+              <label for="{{ form.name.id_for_label }}">Product Name:</label>
+              {{ form.name }}
+              {{ form.name.errors }}
+
+              <label for="{{ form.description.id_for_label }}">Description:</label>
+              {{ form.description }}
+              {{ form.description.errors }}
+        
+              <label for="{{ form.price.id_for_label }}">Price:</label>
+              {{ form.price }}
+              {{ form.price.errors }} 
+
+              <label for="{{ form.image.id_for_label }}">Image:</label>
+              {{ form.image }}
+              {{ fform.image.errors }}
+
+              <button type="submit"> Add Product</button>
+            </form>
+        </div>
+
+
+      <script>
+        let productData;
+
+        productData = JSON.parse("{{ products | safe }}");
+        let cartItems = [];
+        let cartTotal = 0;
+
+        function addToCart(name, image, description, price){
+
+            const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+            const existingItem = cartItems.find((item) => item.name === name);
+            if(existingItem){
+                existingItem.quantity += 1;
+            } 
+            else{
+                cartItems.push({name, image, description, price, quantity: 1});
+            }
+
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            alert("Item added to cart!");
+        }
+
+      </script>
+  
+</body>
+</html>
+<!-- onclick="addToCart('{{product.name}}', '{{product.description}}')" -->
+           

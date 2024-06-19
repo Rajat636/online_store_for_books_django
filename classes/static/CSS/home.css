@@ -1,0 +1,69 @@
+/* styles.css */
+
+/* Basic Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+/* Customize Styles as Needed */
+#featured-books {
+    /* Add styles for featured books section */
+}
+
+#bestsellers {
+    /* Add styles for bestsellers section */
+}
+
+#new-arrivals {
+    /* Add styles for new arrivals section */
+}
+
+#categories {
+    /* Add styles for categories section */
+}
+
+#special-offers {
+    /* Add styles for special offers section */
+}
+
+#why-choose-us {
+    /* Add styles for why choose us section */
+}
+
+#testimonials {
+    /* Add styles for testimonials section */
+}
+
+#stay-connected {
+    /* Add styles for stay connected section */
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
