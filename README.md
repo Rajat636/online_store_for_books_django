@@ -1,4 +1,4 @@
-Online Book Store
+**Online Book Store**
 Project Overview
 This project is an online book store built using Django. It features a robust authentication system, secure data handling, and two types of users: end users and administrators. End users can browse and purchase books, while administrators can manage the application data.
 
